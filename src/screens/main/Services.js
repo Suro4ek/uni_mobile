@@ -22,7 +22,7 @@ const ServerListComponents = ServicesList.map((item, index) =>
 const Services = props => {
   return (
       <View className="h-screen">
-        <View className="pt-20 bg-white ">
+        <View className="ios:pt-20 android:pt-10 bg-white ">
           <Text className="text-xl font-bold ml-2 mb-4">
             Сервисы
           </Text>
