@@ -1,13 +1,64 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import Svg, {Circle, Path} from "react-native-svg";
 import {Calendar} from "react-native-calendars/src/index";
 
+
+const LessonItem = ({item}) => (
+    <View className="bg-white w-full p-2.5 flex flex-wrap flex-row">
+      <View className="p-2">
+        <Text>
+          {item.start_time.replace(/:00$/, '')}
+        </Text>
+        <Text>
+          {item.end_time.replace(/:00$/, '')}
+        </Text>
+      </View>
+      <View className="ml-4 flex flex-col">
+        <Text className="font-bold text-lg">
+          {item.Name}
+        </Text>
+        <View className="flex flex-row flex-wrap">
+          <Text>
+            {item.teacher}
+          </Text>
+          <View className="mt-2 mx-2">
+            <Svg width="4" height="5" viewBox="0 0 4 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <Circle cx="2" cy="2.5" r="2" fill="#A8AEC1"/>
+            </Svg>
+          </View>
+          <Text>
+            {item.aud}
+          </Text>
+        </View>
+      </View>
+    </View>
+)
+
 const MonthsName = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
+let lessons = []
 const TaskTable = props => {
+  const[lesson, setLessons] = useState([])
 
   const[date, setDate] = useState(new Date());
   const[show, setShow] = useState(false);
+
+  const getLessons = React.useCallback(async () => {
+    const url = `https://surobackend.hyneo.ru/lessons`;
+    const response = await fetch(url);
+    lessons = await response.json();
+    setLessons(lessons)
+  })
+  useEffect(() => {
+    getLessons();
+  }, [])
+
+  useEffect(() => {
+    setLessons(lessons.filter((item) => item.Day === date.getDay()))
+    console.log(lessons)
+  },[date, lessons])
+
+
   return (
       <View className="h-screen">
         <View className="ios:pt-20 android:pt-10 bg-white flex flew-wrap flex-row justify-between">
@@ -72,67 +123,8 @@ const TaskTable = props => {
               disableAllTouchEventsForDisabledDays={true}
           />
         </View>
-        <View className="mt-4 ">
-
-          <View className="flex gap-2">
-            <View className="bg-white w-full p-2.5 flex flex-wrap flex-row">
-              <View className="p-2">
-                <Text>
-                  08:00
-                </Text>
-                <Text>
-                  09:35
-                </Text>
-              </View>
-              <View className="ml-4 flex flex-col">
-                <Text className="font-bold text-lg">
-                  Иностранный язык
-                </Text>
-                <View className="flex flex-row flex-wrap">
-                  <Text>
-                    Сидоров В.Н
-                  </Text>
-                  <View className="mt-2 mx-2">
-                    <Svg width="4" height="5" viewBox="0 0 4 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <Circle cx="2" cy="2.5" r="2" fill="#A8AEC1"/>
-                    </Svg>
-                  </View>
-                  <Text>
-                    344 ауд.
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <View className="bg-white w-full p-2.5 flex flex-wrap flex-row">
-              <View className="p-2">
-                <Text>
-                  08:00
-                </Text>
-                <Text>
-                  09:35
-                </Text>
-              </View>
-              <View className="ml-4 flex flex-col">
-                <Text className="font-bold text-lg">
-                  Иностранный язык
-                </Text>
-                <View className="flex flex-row flex-wrap">
-                  <Text>
-                    Сидоров В.Н
-                  </Text>
-                  <View className="mt-2 mx-2">
-                    <Svg width="4" height="5" viewBox="0 0 4 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <Circle cx="2" cy="2.5" r="2" fill="#A8AEC1"/>
-                    </Svg>
-                  </View>
-                  <Text>
-                    344 ауд.
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
+        <View className="mt-4 h-screen">
+          <FlatList data={lesson} extraData={lessons} renderItem={LessonItem} keyExtractor={item => item.id}/>
         </View>
       </View>
   );

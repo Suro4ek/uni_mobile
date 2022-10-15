@@ -1,5 +1,5 @@
 const defaultState = {
-  jwt: 'sdsd',
+  jwt: "",
   user: null,
 };
 
