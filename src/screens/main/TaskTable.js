@@ -5,7 +5,7 @@ import {Calendar} from "react-native-calendars/src/index";
 
 
 const LessonItem = ({item}) => (
-    <View className="bg-white w-full p-2.5 flex flex-wrap flex-row">
+    <View className="bg-white w-full p-2.5 flex flex-wrap flex-row mt-4">
       <View className="p-2">
         <Text>
           {item.start_time.replace(/:00$/, '')}
@@ -60,7 +60,7 @@ const TaskTable = props => {
 
 
   return (
-      <View className="h-screen">
+      <View className="h-full">
         <View className="ios:pt-20 android:pt-10 bg-white flex flew-wrap flex-row justify-between">
           <TouchableOpacity onPress={() =>
           {
@@ -123,7 +123,7 @@ const TaskTable = props => {
               disableAllTouchEventsForDisabledDays={true}
           />
         </View>
-        <View className="mt-4 h-screen">
+        <View className="h-full">
           <FlatList data={lesson} extraData={lessons} renderItem={LessonItem} keyExtractor={item => item.id}/>
         </View>
       </View>

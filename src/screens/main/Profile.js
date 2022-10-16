@@ -1,5 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableHighlight, Button} from 'react-native';
+import {store} from "../../redux/Store";
+import {logout} from "../../app/controllers/UserController";
 
 const Profile = props => {
   return (
@@ -69,7 +71,9 @@ const Profile = props => {
             </View>
           </View>
           <View className="mt-16">
-            <Button title={"Выйти"} onPress={() => props.navigation.navigate('Login')}/>
+            <Button title={"Выйти"} onPress={() => {
+              logout(store.getState().user)
+            }}/>
           </View>
         </View>
       </View>

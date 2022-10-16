@@ -8,7 +8,7 @@ import {store} from '../../redux/Store';
 
 const Authentication = () => {
   const [route, setRoute] = React.useState(
-    store.getState().jwt ? 'Main' : 'Main',
+    store.getState().jwt ? 'Main' : 'Login',
   );
 
   const Navigator = createAppContainer(
@@ -28,7 +28,7 @@ const Authentication = () => {
   );
   React.useEffect(() => {
     store.subscribe(() => {
-      setRoute(store.getState().jwt ? 'Main' : 'Main');
+      setRoute(store.getState().jwt ? 'Main' : 'Login');
     });
   }, []);
 

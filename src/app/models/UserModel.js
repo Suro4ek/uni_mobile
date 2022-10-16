@@ -1,8 +1,8 @@
 import {login, logout} from '../controllers/UserController';
 
 class UserModel {
-  constructor(identifier, password) {
-    this.identifier = identifier;
+  constructor(login, password) {
+    this.identifier = login;
     this.password = password;
   }
 
